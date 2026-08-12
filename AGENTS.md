@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-json_yaml_swiss is a browser-first universal config format converter. Convert between JSON, YAML, and TOML — plus pretty-print, minify, and validate — all in WASM. Privacy-first: zero server-side data.
+json_yaml_swiss is a browser-first inspector, validator, formatter, and deliberate converter for JSON, YAML, and TOML. It runs locally in WASM and reports normalization instead of claiming lossless source conversion.
 
 ## Architecture
 
@@ -12,7 +12,6 @@ json_yaml_swiss/
 │   ├── json_yaml_swiss_core/       # Format detection, conversion engine, validation
 │   └── json_yaml_swiss_web/        # WASM cdylib entry point + static HTML editor
 ├── docs/                            # Product spec, architecture, plans
-├── skills/                          # Agent Skill definitions (MCP tools)
 └── index.html                       # Product landing page
 ```
 
@@ -20,14 +19,13 @@ json_yaml_swiss/
 
 | File | Purpose |
 |------|---------|
-| `crates/json_yaml_swiss_core/src/convert.rs` | Format detection, all conversion logic, pretty/minify/validate |
+| `crates/json_yaml_swiss_core/src/convert.rs` | Reports, strict parsing, inspection, detection, and conversion |
 | `crates/json_yaml_swiss_core/src/error.rs` | Stable error type with machine-readable codes |
-| `crates/json_yaml_swiss_core/src/wasm.rs` | WASM bindings (6 JS exports) |
+| `crates/json_yaml_swiss_core/src/wasm.rs` | WASM bindings for the Rust reports |
 | `crates/json_yaml_swiss_core/src/lib.rs` | Crate root, conditional WASM compilation |
 | `crates/json_yaml_swiss_web/src/lib.rs` | cdylib entry point, re-exports |
 | `crates/json_yaml_swiss_web/static/index.html` | Full-featured converter UI |
-| `skills/json_yaml_swiss.md` | Agent usage workflow |
-| `skills/mcp-tools.json` | MCP tool definitions |
+| `docs/product_spec.md` | Authoritative product and data contract |
 
 ## Build & Test Commands
 
@@ -52,20 +50,17 @@ wasm-pack build --target web crates/json_yaml_swiss_web
 
 1. **Browser-first**: All format conversion happens in-browser via WASM
 2. **Privacy-first**: Zero data leaves the browser. No server, no telemetry, no tracking.
-3. **Auto-detection**: Format detection heuristics: JSON (strictest) first, then TOML, then YAML (most permissive)
-4. **Common IR**: All formats deserialize through serde into a common intermediate representation, then re-serialize to target
-5. **Stable error codes**: Every CoreError has a machine-readable `code()` for programmatic consumers
+3. **Explicit format selection**: Detection is advisory and reports every matching parser
+4. **Strict common model**: Unsupported values fail instead of being coerced or overwritten
+5. **Versioned reports**: Inspection, detection, and conversion return serializable contracts
+6. **Stable diagnostics**: Every `CoreError` and normalization warning has a machine-readable code
 
-## Format Detection Algorithm
+## Supported Operations
 
-1. Try JSON first (strictest syntax, most common)
-2. If not JSON, try TOML (distinctive `[section]` / `key = value` syntax)
-3. If not TOML, try YAML (most permissive, catch-all)
-4. If nothing works, return `UnknownFormat` error
-
-## Supported Conversions
-
-All 6 directions: JSON↔YAML, JSON↔TOML, YAML↔TOML. Plus identity conversions (pretty/minify).
+- Inspect an explicitly selected format and report its structure.
+- Suggest formats while preserving ambiguity in the result.
+- Normalize one format or convert across all six cross-format directions.
+- Reject values that the selected target cannot represent.
 
 ## Error Codes (Stable Machine-Readable)
 
@@ -77,19 +72,28 @@ All 6 directions: JSON↔YAML, JSON↔TOML, YAML↔TOML. Plus identity conversio
 | `INVALID_JSON` | JSON parsing failed |
 | `INVALID_YAML` | YAML parsing failed |
 | `INVALID_TOML` | TOML parsing failed |
-| `PARSE_ERROR` | Generic parse failure |
-| `CONVERSION_ERROR` | Conversion between formats failed |
+| `DUPLICATE_KEY` | A parser encountered a repeated object or table key |
+| `MULTIPLE_YAML_DOCUMENTS` | YAML input contains more than one document |
+| `UNSUPPORTED_YAML_KEY` | YAML mapping key is not a string |
+| `UNSUPPORTED_YAML_TAG` | YAML input contains an explicit tag |
+| `DOCUMENT_TOO_COMPLEX` | Normalized input exceeds the depth or node limit |
+| `TARGET_CANNOT_REPRESENT_VALUE` | Target format cannot preserve a normalized value |
+| `OUTPUT_TOO_LARGE` | Generated output exceeds its byte limit |
+| `SERIALIZATION_ERROR` | The normalized value could not be serialized |
 
 ## WASM Exports
 
 | Function | Signature | Returns |
 |----------|-----------|---------|
-| `wasm_convert` | (from, to, input, pretty, indent) | Result<String, JsValue> |
-| `wasm_detect_format` | (input) | Result<String, JsValue> |
-| `wasm_pretty_print` | (format, input, indent) | Result<String, JsValue> |
-| `wasm_minify` | (format, input) | Result<String, JsValue> |
-| `wasm_validate` | (format, input) | {valid: bool, error: string|null} |
-| `wasm_list_formats` | () | ["json","yaml","toml"] |
+| `wasm_inspect` | (format, input) | `InspectionReport` |
+| `wasm_detect` | (input) | `DetectionReport` |
+| `wasm_convert` | (from, to, input, pretty, indent) | `ConversionReport` |
+| `wasm_formats` | () | ["json","toml","yaml"] |
+
+## Commit Language
+
+- Write commit subjects and bodies in English and follow Conventional Commits.
+- This repository-level rule overrides any global preference for another commit-message language.
 
 ## Frontend Design Requirement
 
