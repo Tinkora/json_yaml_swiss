@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Inspect, validate, format, and deliberately convert JSON, YAML, and TOML locally in your browser.">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>JSON YAML Swiss | Tinkora</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#workbench" data-i18n="skip">Skip to workbench</a>
+
+    <header class="site-header">
+      <div class="shell header-inner">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">{ }</span>
+          <div>
+            <p class="eyebrow">Tinkora config tools</p>
+            <h1>JSON YAML Swiss</h1>
+          </div>
+        </div>
+        <div class="header-actions">
+          <div class="runtime" aria-live="polite">
+            <span class="runtime-dot" aria-hidden="true"></span>
+            <span id="wasm-status" role="status" aria-label="Conversion engine status">Loading</span>
+          </div>
+          <button id="language-button" class="icon-button language-button" type="button" aria-label="Switch to Chinese" title="Switch to Chinese">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"></path></svg>
+            <span id="language-label">中文</span>
+          </button>
+          <a class="icon-button" href="https://github.com/Tinkora/json_yaml_swiss" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository" title="GitHub">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3.3-.4 6.8-1.6 6.8-7A5.4 5.4 0 0 0 19.4 4 5 5 0 0 0 19.3.5S18.2.1 15 1.8a13.4 13.4 0 0 0-7 0C4.8.1 3.7.5 3.7.5A5 5 0 0 0 3.6 4a5.4 5.4 0 0 0-1.4 3.7c0 5.4 3.5 6.6 6.8 7A4.8 4.8 0 0 0 8 18v4M8 19c-3 .9-5-1.3-5-3"></path></svg>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main id="workbench" class="shell page-content">
+      <section class="intro" aria-labelledby="workbench-title">
+        <div>
+          <p class="kicker" data-i18n="kicker">Local configuration workbench</p>
+          <h2 id="workbench-title" data-i18n="introTitle">Review the value before changing the format.</h2>
+        </div>
+        <p class="intro-copy" data-i18n="introCopy">Parsing and conversion run in local WebAssembly. Ambiguous formats stay explicit, and every normalization is reported before you copy or download output.</p>
+      </section>
+
+      <div id="error-message" class="message error" role="alert" hidden></div>
+
+      <section class="control-band" aria-label="Conversion controls" data-i18n-aria="controls">
+        <div class="field format-field">
+          <label for="source-format" data-i18n="sourceFormat">Source format</label>
+          <select id="source-format">
+            <option value="json">JSON</option>
+            <option value="yaml">YAML</option>
+            <option value="toml">TOML</option>
+          </select>
+        </div>
+        <button id="swap-button" class="icon-button swap-button" type="button" aria-label="Swap formats" title="Swap formats">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m7 16-4-4 4-4M3 12h18M17 8l4 4-4 4"></path></svg>
+        </button>
+        <div class="field format-field">
+          <label for="target-format" data-i18n="targetFormat">Target format</label>
+          <select id="target-format">
+            <option value="json">JSON</option>
+            <option value="yaml" selected>YAML</option>
+            <option value="toml">TOML</option>
+          </select>
+        </div>
+        <div class="field indent-field">
+          <label for="indent-size" data-i18n="indent">Indent</label>
+          <select id="indent-size">
+            <option value="2" selected>2</option>
+            <option value="4">4</option>
+            <option value="8">8</option>
+          </select>
+        </div>
+        <div class="control-actions">
+          <button id="detect-button" class="button button-secondary" type="button" disabled data-i18n="detect">Detect format</button>
+          <button id="inspect-button" class="button button-secondary" type="button" disabled data-i18n="inspect">Inspect input</button>
+          <button id="convert-button" class="button button-primary" type="button" disabled>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            <span data-i18n="convert">Convert configuration</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="Editor workspace" data-i18n-aria="workspace">
+        <article class="editor-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="section-label" data-i18n="stepInput">01 / Input</p>
+              <h2 data-i18n="inputTitle">Source document</h2>
+            </div>
+            <span class="limit-note">UTF-8 · 2 MiB</span>
+          </div>
+          <label for="configuration-input" data-i18n="inputLabel">Configuration input</label>
+          <textarea id="configuration-input" spellcheck="false" autocomplete="off" placeholder='{"agent":{"enabled":true}}' data-i18n-placeholder="inputPlaceholder"></textarea>
+          <div class="editor-actions">
+            <button id="open-file-button" class="button button-secondary file-button" type="button">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12M7 8l5-5 5 5M5 21h14a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2"></path></svg>
+              <span data-i18n="openFile">Open file</span>
+            </button>
+            <input id="file-input" type="file" accept=".json,.yaml,.yml,.toml,application/json,text/yaml,application/toml,text/plain" aria-label="Open configuration file" data-i18n-aria="openFileLabel" hidden>
+            <button id="sample-button" class="button button-secondary" type="button" data-i18n="sample">Load sample</button>
+            <button id="clear-button" class="button button-quiet" type="button" disabled data-i18n="clear">Clear</button>
+            <span id="input-count" class="editor-count">0 B</span>
+          </div>
+        </article>
+
+        <article class="editor-panel output-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="section-label" data-i18n="stepOutput">02 / Output</p>
+              <h2 data-i18n="outputTitle">Normalized copy</h2>
+            </div>
+            <span id="output-state" class="state-badge" data-i18n="waiting">Waiting</span>
+          </div>
+          <label for="conversion-output" data-i18n="outputLabel">Conversion output</label>
+          <textarea id="conversion-output" readonly spellcheck="false" placeholder="Run a conversion to create an explicit copy." data-i18n-placeholder="outputPlaceholder"></textarea>
+          <div class="editor-actions output-actions">
+            <button id="copy-button" class="button button-secondary" type="button" disabled>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span data-i18n="copy">Copy</span>
+            </button>
+            <button id="download-button" class="button button-secondary" type="button" disabled>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"></path></svg>
+              <span data-i18n="download">Download</span>
+            </button>
+            <span id="output-count" class="editor-count">0 B</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="report-grid" aria-label="Inspection and conversion report" data-i18n-aria="report">
+        <article class="report-panel" aria-labelledby="inspection-title">
+          <div class="panel-heading compact-heading">
+            <div>
+              <p class="section-label" data-i18n="stepInspect">03 / Inspect</p>
+              <h2 id="inspection-title" data-i18n="inspectionTitle">Document shape</h2>
+            </div>
+            <span id="inspection-state" class="state-badge" data-i18n="notInspected">Not inspected</span>
+          </div>
+          <dl class="metrics">
+            <div><dt data-i18n="format">Format</dt><dd id="metric-format">-</dd></div>
+            <div><dt data-i18n="root">Root</dt><dd id="root-type" data-testid="root-type">-</dd></div>
+            <div><dt data-i18n="nodes">Nodes</dt><dd id="metric-nodes">-</dd></div>
+            <div><dt data-i18n="depth">Depth</dt><dd id="metric-depth">-</dd></div>
+            <div><dt data-i18n="bytes">Bytes</dt><dd id="metric-bytes">-</dd></div>
+          </dl>
+        </article>
+
+        <article class="report-panel" aria-labelledby="detection-title">
+          <div class="panel-heading compact-heading">
+            <div>
+              <p class="section-label" data-i18n="stepDetect">04 / Detect</p>
+              <h2 id="detection-title" data-i18n="detectionTitle">Parser matches</h2>
+            </div>
+          </div>
+          <div id="detection-result" class="empty-report" data-testid="detection-result" data-i18n="detectionEmpty">Detection is advisory and never changes your source selection.</div>
+        </article>
+
+        <article class="report-panel warnings-panel" aria-labelledby="warnings-title">
+          <div class="panel-heading compact-heading">
+            <div>
+              <p class="section-label" data-i18n="stepWarnings">05 / Warnings</p>
+              <h2 id="warnings-title" data-i18n="warningsTitle">Normalization review</h2>
+            </div>
+          </div>
+          <ul id="warning-list" class="warning-list" data-testid="warning-list">
+            <li class="clear-warning" data-i18n="warningsEmpty">No conversion report yet.</li>
+          </ul>
+        </article>
+      </section>
+    </main>
+
+    <footer class="shell site-footer">
+      <span data-i18n="footerPrivacy">No upload, storage, telemetry, or JavaScript parser fallback.</span>
+      <span>JSON · YAML · TOML · contract v1</span>
+    </footer>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
