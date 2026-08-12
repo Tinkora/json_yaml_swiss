@@ -1,0 +1,6 @@
+/target/
+.playwright-cli/
+crates/json_yaml_swiss_web/static/pkg/
+crates/json_yaml_swiss_web/node_modules/
+crates/json_yaml_swiss_web/playwright-report/
+crates/json_yaml_swiss_web/test-results/
