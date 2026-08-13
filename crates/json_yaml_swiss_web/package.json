@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "build:wasm": "wasm-pack build --target web --release --out-dir static/pkg .",
+    "prepare:wasm_smoke": "node scripts/prepare_wasm_smoke.mjs",
+    "test:prepare_wasm_smoke": "node --test scripts/prepare_wasm_smoke.test.mjs",
+    "test:wasm-smoke": "npm run test:prepare_wasm_smoke && npm run prepare:wasm_smoke && playwright test",
     "test:browser": "npm run build:wasm && playwright test"
   },
   "devDependencies": {
