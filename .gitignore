@@ -1,4 +1,5 @@
 /target/
+.DS_Store
 .playwright-cli/
 crates/json_yaml_swiss_web/static/pkg/
 crates/json_yaml_swiss_web/node_modules/

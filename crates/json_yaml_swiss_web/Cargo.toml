@@ -13,7 +13,7 @@ wasm-opt = false
 crate-type = ["cdylib"]
 
 [dependencies]
-json_yaml_swiss_core = { path = "../json_yaml_swiss_core" }
+json_yaml_swiss_core = { path = "../json_yaml_swiss_core", version = "0.1.0" }
 wasm-bindgen.workspace = true
 js-sys.workspace = true
 serde.workspace = true
