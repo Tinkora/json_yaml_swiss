@@ -2,9 +2,9 @@
 
 [简体中文](MATURITY.zh-CN.md)
 
-JSON YAML Swiss is **Draft** until hosted checks and the deployed application
-provide evidence for the exact public commit. Do not add a maturity badge before
-that evidence exists.
+JSON YAML Swiss is **Alpha**. Native, WASM, browser, documentation, dependency,
+and security checks pass in hosted CI, and the deployed Pages application has
+been verified.
 
 | Level | Minimum evidence |
 | --- | --- |

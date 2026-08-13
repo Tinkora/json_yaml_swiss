@@ -4,12 +4,10 @@
 
 ## Supported versions
 
-The project is not released yet. Until the first hosted release, security fixes
-are applied to `main`.
-
 | Version | Supported |
 | --- | --- |
-| `main` | Yes |
+| `0.1.x` | Yes |
+| `< 0.1` | No |
 | Modified local copies | No commitment |
 
 ## Reporting a vulnerability
@@ -20,8 +18,7 @@ private configuration. Use
 and provide the affected commit, impact, minimal non-sensitive reproduction,
 and suggested mitigation.
 
-Private Vulnerability Reporting must be enabled before the repository is
-announced. Until that channel is available, do not submit sensitive details.
+Private Vulnerability Reporting is enabled for this repository.
 
 ## Security boundary
 

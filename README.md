@@ -52,8 +52,8 @@ complete contract and stable diagnostic codes.
 
 ## Browser tool
 
-The public application will be available at
-<https://tinkora.github.io/json_yaml_swiss/> after the first verified release.
+The public application is available at
+<https://tinkora.github.io/json_yaml_swiss/>.
 
 To run it locally:
 
@@ -88,8 +88,9 @@ output, downloads, console errors, and unexpected external requests.
 
 ## Project status
 
-The project is **Draft** until the exact public commit passes hosted CI and the
-deployed Pages application is verified. See [maturity](docs/MATURITY.md),
+The project is **Alpha**. Native, WASM, browser, documentation, dependency, and
+security checks pass in hosted CI, and the deployed Pages application has been
+verified. See [maturity](docs/MATURITY.md),
 [contributing](CONTRIBUTING.md), [security](SECURITY.md),
 [support](SUPPORT.md), and the [release checklist](docs/RELEASE_CHECKLIST.md).
 

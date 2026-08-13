@@ -4,11 +4,10 @@
 
 ## 支持版本
 
-项目尚未发布。第一版托管 release 之前，安全修复应用于 `main`。
-
 | 版本 | 支持状态 |
 | --- | --- |
-| `main` | 支持 |
+| `0.1.x` | 支持 |
+| `< 0.1` | 不支持 |
 | 修改后的本地副本 | 不作承诺 |
 
 ## 报告漏洞
@@ -17,8 +16,7 @@
 [GitHub Private Vulnerability Reporting](https://github.com/Tinkora/json_yaml_swiss/security/advisories/new)，
 并提供受影响 commit、影响、最小非敏感复现和建议的缓解方案。
 
-仓库公开宣传前必须启用 Private Vulnerability Reporting。在该私密渠道可用前，请不要提交
-敏感细节。
+本仓库已启用 Private Vulnerability Reporting。
 
 ## 安全边界
 

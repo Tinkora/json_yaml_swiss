@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-08-13
+
 ### Added
 
 - Strict JSON, YAML, and TOML inspection, advisory detection, normalization,
@@ -16,4 +18,5 @@ All notable changes to this project are documented here. The format follows
 - Resource limits, duplicate-key rejection, unsupported-value checks, and real
   Chromium coverage at four responsive widths.
 
-[Unreleased]: https://github.com/Tinkora/json_yaml_swiss/commits/main
+[Unreleased]: https://github.com/Tinkora/json_yaml_swiss/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/Tinkora/json_yaml_swiss/releases/tag/v0.1.0

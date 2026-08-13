@@ -38,8 +38,7 @@ Rust/WebAssembly 完成；配置文本不会上传、存储或发送给遥测服
 
 ## 浏览器工具
 
-首次验证发布后，公开应用将位于
-<https://tinkora.github.io/json_yaml_swiss/>。
+公开应用位于 <https://tinkora.github.io/json_yaml_swiss/>。
 
 本地运行：
 
@@ -73,7 +72,8 @@ npm run test:browser
 
 ## 项目状态
 
-在精确 public commit 通过托管 CI 且 Pages 应用完成验证前，项目处于 **Draft**。参见
+项目当前处于 **Alpha**。native、WASM、浏览器、文档、依赖和安全检查均已在托管 CI 中
+通过，部署后的 Pages 应用也已完成验证。参见
 [成熟度](docs/MATURITY.zh-CN.md)、[贡献指南](CONTRIBUTING.zh-CN.md)、
 [安全政策](SECURITY.zh-CN.md)、[支持说明](SUPPORT.zh-CN.md)和
 [发布检查清单](docs/RELEASE_CHECKLIST.zh-CN.md)。
