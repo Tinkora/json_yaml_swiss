@@ -1,0 +1,32 @@
+name: Quality
+
+'on':
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rust:
+    uses: Tinkora/.github/.github/workflows/reusable-rust-quality.yml@e80d6099799b9d372525f1639aa601504fe8d52b
+    with:
+      toolchain: 1.95.0
+      msrv: 1.95.0
+      locked: true
+
+  wasm-browser:
+    uses: Tinkora/.github/.github/workflows/reusable-wasm-quality.yml@e80d6099799b9d372525f1639aa601504fe8d52b
+    with:
+      working-directory: crates/json_yaml_swiss_web
+      toolchain: 1.95.0
+      locked: true
+      playwright-smoke: true
+      node-version: '24.11.1'

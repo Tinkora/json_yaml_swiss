@@ -1,0 +1,142 @@
+name: Release
+
+'on':
+  push:
+    tags: ['v*.*.*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.version.outputs.value }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Resolve version and changelog
+        id: version
+        env:
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          semver='(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-((0|[1-9][0-9]*)|([0-9]*[A-Za-z-][0-9A-Za-z-]*))(\.((0|[1-9][0-9]*)|([0-9]*[A-Za-z-][0-9A-Za-z-]*)))*)?(\+([0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*))?'
+          [[ "$REF_NAME" =~ ^v($semver)$ ]] || { echo "tag must be vX.Y.Z" >&2; exit 1; }
+          version="${BASH_REMATCH[1]}"
+          grep -Fq "## [$version]" CHANGELOG.md || { echo "missing changelog section" >&2; exit 1; }
+          echo "value=$version" >> "$GITHUB_OUTPUT"
+      - name: Set up Rust
+        run: |
+          rustup toolchain install 1.95.0 --profile minimal --no-self-update
+          rustup target add wasm32-unknown-unknown --toolchain 1.95.0
+          cargo +1.95.0 install wasm-pack --version 0.15.0 --locked
+      - name: Run release checks
+        run: |
+          cargo +1.95.0 fmt --all -- --check
+          cargo +1.95.0 test --workspace --locked
+          cargo +1.95.0 clippy --workspace --all-targets --locked -- -D warnings
+          cargo +1.95.0 check --workspace --target wasm32-unknown-unknown --locked
+          ruby scripts/test_check_docs.rb
+          ruby scripts/check_docs.rb
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24.11.1'
+      - name: Build and smoke test web artifact
+        working-directory: crates/json_yaml_swiss_web
+        env:
+          RUSTUP_TOOLCHAIN: 1.95.0
+          CI: 'true'
+        run: |
+          npm ci --ignore-scripts
+          npm audit --audit-level=high
+          npx --no-install playwright install --with-deps chromium
+          npm run build:wasm
+          npm run test:wasm-smoke
+      - name: Package source evidence
+        env:
+          VERSION: ${{ steps.version.outputs.value }}
+        run: |
+          set -euo pipefail
+          mkdir -p release_assets
+          git archive --format=tar.gz --prefix="json_yaml_swiss-$VERSION/" -o "release_assets/json_yaml_swiss-$VERSION-source.tar.gz" HEAD
+          printf '%s\n' "{\"commit\":\"$GITHUB_SHA\",\"version\":\"$VERSION\"}" > release_assets/release-metadata.json
+      - name: Upload candidate source artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: release_source_${{ steps.version.outputs.value }}
+          path: release_assets
+          if-no-files-found: error
+          retention-days: 7
+  supply_chain:
+    uses: Tinkora/.github/.github/workflows/reusable-supply-chain.yml@e80d6099799b9d372525f1639aa601504fe8d52b
+    with:
+      working-directory: .
+      toolchain: 1.95.0
+  prepare:
+    needs: [verify, supply_chain]
+    uses: Tinkora/.github/.github/workflows/reusable-release.yml@e80d6099799b9d372525f1639aa601504fe8d52b
+    with:
+      source-artifact-name: release_source_${{ needs.verify.outputs.version }}
+      version: ${{ needs.verify.outputs.version }}
+      publish: false
+  publish:
+    needs: [verify, prepare]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download verified release candidate
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: ${{ needs.prepare.outputs.candidate-artifact-name }}
+          path: ${{ runner.temp }}/release_candidate
+      - name: Validate release assets
+        env:
+          VERSION: ${{ needs.verify.outputs.version }}
+        run: |
+          set -euo pipefail
+          bundle="$RUNNER_TEMP/release_candidate"
+          [[ -d "$bundle" && ! -L "$bundle" ]] || { echo "release candidate is missing" >&2; exit 1; }
+          [[ -f "$bundle/SHA256SUMS" && -f "$bundle/SBOM.spdx.json" && -f "$bundle/LICENSES.json" ]] || {
+            echo "release evidence is incomplete" >&2
+            exit 1
+          }
+          [[ -f "$bundle/json_yaml_swiss-$VERSION-source.tar.gz" ]] || {
+            echo "source archive is missing" >&2
+            exit 1
+          }
+          if find "$bundle" -type l -print -quit | grep -q .; then
+            echo "symlinks are forbidden in release candidates" >&2
+            exit 1
+          fi
+          (
+            cd "$bundle"
+            shasum -a 256 -c SHA256SUMS
+          )
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          assets=()
+          while IFS= read -r -d '' file; do
+            assets+=("$file")
+          done < <(find "$RUNNER_TEMP/release_candidate" -maxdepth 1 -type f -print0)
+          ((${#assets[@]} > 0)) || { echo "release has no assets" >&2; exit 1; }
+          gh release create "$TAG" "${assets[@]}" \
+            --repo "$GITHUB_REPOSITORY" \
+            --verify-tag \
+            --generate-notes \
+            --title "$TAG"
