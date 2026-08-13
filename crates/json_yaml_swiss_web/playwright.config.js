@@ -17,6 +17,9 @@ export default defineConfig({
   use: {
     baseURL: 'http://127.0.0.1:43175',
     trace: 'retain-on-failure',
+    launchOptions: process.env.BROWSER_EXECUTABLE_PATH
+      ? { executablePath: process.env.BROWSER_EXECUTABLE_PATH }
+      : undefined,
     ...devices['Desktop Chrome'],
   },
   projects: viewports.map(([name, viewport]) => ({ name, use: { viewport } })),
