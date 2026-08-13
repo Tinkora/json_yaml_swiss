@@ -16,7 +16,7 @@ async function createPackage(root) {
 }
 
 async function fixture(t) {
-  const root = await mkdtemp(join(tmpdir(), 'json-yaml-swiss-wasm-'));
+  const root = await mkdtemp(join(tmpdir(), 'json_yaml_swiss_wasm_'));
   await mkdir(join(root, 'static'), { recursive: true });
   t.after(() => rm(root, { recursive: true, force: true }));
   return root;

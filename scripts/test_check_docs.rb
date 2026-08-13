@@ -51,7 +51,7 @@ class CheckDocsTest < Minitest::Test
   private
 
   def with_repository(remove: [], overrides: {})
-    Dir.mktmpdir("json-yaml-swiss-docs-") do |root|
+    Dir.mktmpdir("json_yaml_swiss_docs_") do |root|
       files = REQUIRED.to_h { |path| [path, "# #{File.basename(path)}\n"] }
       files["README.md"] = "[简体中文](README.zh-CN.md)\n"
       files["README.zh-CN.md"] = "[English](README.md)\n"
