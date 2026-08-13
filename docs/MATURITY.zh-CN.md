@@ -2,8 +2,8 @@
 
 [English](MATURITY.md)
 
-在托管检查和已部署应用为准确 public commit 提供证据前，JSON YAML Swiss 处于 **Draft**。
-证据出现前不得添加成熟度 badge。
+JSON YAML Swiss 当前处于 **Alpha**。native、WASM、浏览器、文档、依赖和安全检查均已
+在托管 CI 中通过，部署后的 Pages 应用也已完成验证。
 
 | 等级 | 最低证据 |
 | --- | --- |

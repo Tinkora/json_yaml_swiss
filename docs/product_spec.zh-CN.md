@@ -2,7 +2,7 @@
 
 [English](product_spec.md)
 
-状态：Draft。最后复核：2026-08-12。
+状态：Alpha。最后复核：2026-08-13。
 
 ## 目标
 
