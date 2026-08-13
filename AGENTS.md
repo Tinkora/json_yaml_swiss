@@ -11,8 +11,8 @@ json_yaml_swiss/
 ├── crates/
 │   ├── json_yaml_swiss_core/       # Format detection, conversion engine, validation
 │   └── json_yaml_swiss_web/        # WASM cdylib entry point + static HTML editor
-├── docs/                            # Product spec, architecture, plans
-└── index.html                       # Product landing page
+├── docs/                            # Product contract and release evidence
+└── design-system/                   # Persisted frontend design rules
 ```
 
 ## Key Files for AI Context

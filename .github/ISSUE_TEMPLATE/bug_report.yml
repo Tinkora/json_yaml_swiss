@@ -1,0 +1,53 @@
+name: Bug report
+description: Report a reproducible problem in the local workbench or Rust/WASM core
+title: "bug: "
+labels:
+  - bug
+  - triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please remove secrets and private configuration. For a suspected security issue, use [Private Vulnerability Reporting](https://github.com/Tinkora/json_yaml_swiss/security/advisories/new) instead.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe the smallest observable problem.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction
+      description: Include a minimal non-sensitive input and exact steps.
+      placeholder: |
+        1. Open ...
+        2. Select ...
+        3. Paste ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: v0.1.0 or 0123456
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and operating system
+      placeholder: Chrome 128 on macOS 15
+    validations:
+      required: true
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
