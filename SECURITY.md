@@ -26,7 +26,8 @@ announced. Until that channel is available, do not submit sensitive details.
 ## Security boundary
 
 The browser application processes input in memory with local Rust/WASM. It has
-no conversion API, telemetry, persistence, service worker, or user account.
+no hosted or remote conversion API, telemetry, persistence, service worker, or
+user account.
 User-controlled values are rendered through form values or DOM text APIs. A
 Content Security Policy limits scripts, connections, forms, and embedded
 objects.

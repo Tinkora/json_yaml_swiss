@@ -1,5 +1,7 @@
 # JSON YAML Swiss Product Specification
 
+[简体中文](product_spec.zh-CN.md)
+
 Status: Draft. Last reviewed: 2026-08-12.
 
 ## Objective

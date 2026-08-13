@@ -11,5 +11,6 @@
 - [ ] GitHub 托管检查在准确候选 commit 上通过；本地成功不能替代它。
 - [ ] 已部署 Pages 应用对应预期 commit，且没有 console error、意外运行时外部请求、溢出或无法访问的主要流程。
 - [ ] 已启用 Private Vulnerability Reporting、Discussions、安全功能、merge policy 和 main 分支 ruleset。
-- [ ] 发布产物具有确定性名称、SHA-256 checksum、SPDX SBOM、许可证证据和 provenance。
+- [ ] 发布产物具有确定性名称、SHA-256 checksum、SPDX SBOM 和许可证证据。
+- [ ] 已发布 GitHub Release 只包含经过验证的候选产物。
 - [ ] 已记录 rollback 或 fix-forward 负责人和上一份可用产物。

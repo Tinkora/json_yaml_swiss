@@ -22,8 +22,8 @@
 
 ## 安全边界
 
-浏览器应用通过本地 Rust/WASM 在内存中处理输入。它没有转换 API、遥测、持久化、
-service worker 或用户账号。用户可控值只通过表单 value 或 DOM 文本 API 渲染。
+浏览器应用通过本地 Rust/WASM 在内存中处理输入。它没有托管或远程转换 API、遥测、
+持久化、service worker 或用户账号。用户可控值只通过表单 value 或 DOM 文本 API 渲染。
 Content Security Policy 限制脚本、连接、表单和嵌入对象。
 
 资源上限用于降低意外或恶意内存耗尽风险：输入 2 MiB、规范化节点 100,000 个、嵌套深度
