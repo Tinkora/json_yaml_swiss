@@ -38,6 +38,7 @@ jobs:
       - name: Set up Rust
         run: |
           rustup toolchain install 1.95.0 --profile minimal --no-self-update
+          rustup component add rustfmt clippy --toolchain 1.95.0
           rustup target add wasm32-unknown-unknown --toolchain 1.95.0
           cargo +1.95.0 install wasm-pack --version 0.15.0 --locked
       - name: Run release checks
@@ -46,6 +47,7 @@ jobs:
           cargo +1.95.0 test --workspace --locked
           cargo +1.95.0 clippy --workspace --all-targets --locked -- -D warnings
           cargo +1.95.0 check --workspace --target wasm32-unknown-unknown --locked
+          ruby scripts/test_release_workflow.rb
           ruby scripts/test_check_docs.rb
           ruby scripts/check_docs.rb
       - name: Set up Node.js

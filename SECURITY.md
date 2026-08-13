@@ -6,7 +6,8 @@
 
 | Version | Supported |
 | --- | --- |
-| `0.1.x` | Yes |
+| `0.1.1` | Yes |
+| `0.1.0` | No |
 | `< 0.1` | No |
 | Modified local copies | No commitment |
 

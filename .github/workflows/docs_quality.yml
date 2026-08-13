@@ -21,6 +21,7 @@ jobs:
           persist-credentials: false
       - name: Run documentation contracts
         run: |
+          ruby scripts/test_release_workflow.rb
           ruby scripts/test_check_docs.rb
           ruby scripts/check_docs.rb
       - name: Check Markdown style
