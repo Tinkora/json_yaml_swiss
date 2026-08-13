@@ -6,7 +6,20 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-08-13
+
+### Fixed
+
+- Installed the Rust formatting and lint components required by the release
+  verification job.
+- Added a workflow contract test that prevents release checks from using
+  missing Rust components.
+
 ## [0.1.0] - 2026-08-13
+
+The immutable `v0.1.0` candidate tag did not produce a GitHub Release because
+its release verification environment lacked required Rust components. Use
+`v0.1.1` or later.
 
 ### Added
 
@@ -18,5 +31,6 @@ All notable changes to this project are documented here. The format follows
 - Resource limits, duplicate-key rejection, unsupported-value checks, and real
   Chromium coverage at four responsive widths.
 
-[Unreleased]: https://github.com/Tinkora/json_yaml_swiss/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/Tinkora/json_yaml_swiss/releases/tag/v0.1.0
+[Unreleased]: https://github.com/Tinkora/json_yaml_swiss/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/Tinkora/json_yaml_swiss/releases/tag/v0.1.1
+[0.1.0]: https://github.com/Tinkora/json_yaml_swiss/tree/v0.1.0
