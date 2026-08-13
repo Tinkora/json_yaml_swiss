@@ -6,6 +6,8 @@ not uploaded, stored, or sent to telemetry.
 
 [简体中文](README.zh-CN.md)
 
+[![Support Tinkora on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/tinkora)
+
 ## Why this exists
 
 Configuration conversion is not inherently lossless. JSON, YAML, and TOML
@@ -98,6 +100,5 @@ verified. See [maturity](docs/MATURITY.md),
 
 Released under the [MIT License](LICENSE).
 
-If this tool saves you time, you may support Tinkora through the organization's
-Buy Me a Coffee page when it is published. Sponsorship is optional and never a
-condition of use, support, or contribution.
+If this tool saves you time, you can support Tinkora on Ko-fi. Tips are optional
+and never a condition of use, support, or contribution.
