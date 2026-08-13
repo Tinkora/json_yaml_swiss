@@ -1,0 +1,48 @@
+name: Feature request
+description: Propose a focused improvement backed by a real user problem
+title: "feat: "
+labels:
+  - enhancement
+  - triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Start with the user pain and explain why existing tools do not solve it. Feature requests that weaken local-only privacy or the explicit conversion contract will need extra evidence.
+  - type: textarea
+    id: problem
+    attributes:
+      label: User problem
+      description: Who is affected, and what task is currently difficult?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe the smallest useful change, including inputs and outputs.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Existing alternatives
+      description: Name tools or workarounds you tried and their limitations.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Compatibility and privacy impact
+      description: Explain whether the proposal changes the conversion contract, browser support, or data boundary.
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues and discussions.
+          required: true
+        - label: I have removed secrets and private configuration.
+          required: true

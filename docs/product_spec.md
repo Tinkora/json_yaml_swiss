@@ -137,7 +137,7 @@ Stable error codes:
 - Real Chromium tests exercise local files, validation, warnings, conversion,
   copy/download state, adversarial text rendering, and 375, 768, 1024, and 1440
   pixel viewports.
-- Documentation tests prevent claims of lossless conversion, MCP support, a
-  JavaScript parser fallback, or runtime data upload.
+- Documentation tests enforce the required bilingual files, local links,
+  UTF-8 encoding, and removal of obsolete public scaffolds.
 - Hosted Quality, Documentation quality, Supply chain, CodeQL, and Pages runs
   pass for the exact public commit before an Alpha release.
