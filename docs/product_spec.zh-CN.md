@@ -1,5 +1,7 @@
 # JSON YAML Swiss 产品规格
 
+[English](product_spec.md)
+
 状态：Draft。最后复核：2026-08-12。
 
 ## 目标

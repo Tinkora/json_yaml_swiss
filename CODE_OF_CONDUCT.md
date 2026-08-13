@@ -35,8 +35,11 @@ Examples of unacceptable behavior:
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the project team. All complaints will be reviewed and investigated
-promptly and fairly.
+reported with GitHub's **Report content** controls when they occur on GitHub.
+The project does not currently operate a separate private conduct mailbox. Do
+not post sensitive conduct reports in public issues or discussions. Until a
+private project channel is listed here, use GitHub's platform reporting and
+blocking controls; the project does not promise a response time.
 
 ## Attribution
 

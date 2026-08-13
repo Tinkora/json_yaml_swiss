@@ -12,5 +12,6 @@ publication.
 - [ ] GitHub hosted checks pass on the exact candidate commit; local success is not a substitute.
 - [ ] The deployed Pages application loads the expected commit with no console error, external runtime request, overflow, or inaccessible primary workflow.
 - [ ] Private Vulnerability Reporting, Discussions, security features, merge policy, and the main-branch ruleset are enabled.
-- [ ] Release assets have deterministic names, SHA-256 checksums, SPDX SBOM, license evidence, and provenance.
+- [ ] Release assets have deterministic names, SHA-256 checksums, an SPDX SBOM, and license evidence.
+- [ ] The published GitHub Release contains exactly the verified candidate assets.
 - [ ] The rollback or fix-forward owner and previous known-good artifact are recorded.

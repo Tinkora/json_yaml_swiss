@@ -26,6 +26,7 @@ cargo install wasm-pack --version 0.15.0 --locked
 cd crates/json_yaml_swiss_web
 npm ci --ignore-scripts
 npx --no-install playwright install chromium
+cd ../..
 ```
 
 Run the complete local gate before requesting review:
@@ -35,9 +36,12 @@ cargo fmt --all -- --check
 cargo test --workspace --locked
 cargo clippy --workspace --all-targets --locked -- -D warnings
 cargo check --workspace --target wasm32-unknown-unknown --locked
-cd crates/json_yaml_swiss_web
-npm audit --audit-level=high
-npm run test:browser
+ruby scripts/test_check_docs.rb
+ruby scripts/check_docs.rb
+cargo deny check advisories bans licenses sources
+cargo audit --deny warnings --no-yanked
+npm --prefix crates/json_yaml_swiss_web audit --audit-level=high
+npm --prefix crates/json_yaml_swiss_web run test:browser
 ```
 
 ## Change rules
