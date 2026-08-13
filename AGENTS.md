@@ -6,7 +6,7 @@ json_yaml_swiss is a browser-first inspector, validator, formatter, and delibera
 
 ## Architecture
 
-```
+```text
 json_yaml_swiss/
 ├── crates/
 │   ├── json_yaml_swiss_core/       # Format detection, conversion engine, validation
