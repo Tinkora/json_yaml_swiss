@@ -52,6 +52,7 @@ jobs:
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: '24.11.1'
+          package-manager-cache: false
       - name: Build and smoke test web artifact
         working-directory: crates/json_yaml_swiss_web
         env:
