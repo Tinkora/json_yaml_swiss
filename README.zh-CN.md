@@ -5,6 +5,18 @@ Rust/WebAssembly 完成；配置文本不会上传、存储或发送给遥测服
 
 [English](README.md)
 
+<!-- markdownlint-disable MD033 -->
+<p align="center">
+  <a href="https://ko-fi.com/tinkora" target="_blank" rel="noopener noreferrer">
+    <img
+      src="https://ko-fi.com/img/githubbutton_sm.svg"
+      alt="在 Ko-fi 上支持 Tinkora"
+      width="520"
+    >
+  </a>
+</p>
+<!-- markdownlint-enable MD033 -->
+
 ## 为什么需要它
 
 配置格式转换本身并不一定无损。JSON、YAML 和 TOML 的值模型与源码特性不同，许多转换器
@@ -82,5 +94,4 @@ npm run test:browser
 
 项目使用 [MIT License](LICENSE) 发布。
 
-如果本工具节省了你的时间，可以在 Tinkora 组织发布 Buy Me a Coffee 页面后自愿支持。
-赞助不是使用、获取支持或参与贡献的条件。
+如果本工具节省了你的时间，可以在 Ko-fi 上支持 Tinkora。赞助完全自愿，不是使用、获取支持或参与贡献的条件。
