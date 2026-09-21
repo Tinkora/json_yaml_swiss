@@ -118,6 +118,6 @@ Rust core 是唯一权威实现。WASM adapter 返回相同 report 和稳定错�
 - clean checkout 通过 Rust 格式、测试、Clippy、MSRV 和 WASM 检查。
 - 真实 Chromium 测试覆盖本地文件、校验、warning、转换、复制/下载状态、恶意文本渲染，
   以及 375、768、1024、1440 像素视口。
-- 文档测试检查必需的双语文件、本地链接、UTF-8 编码和旧公开脚手架清理。
+- 文档检查检查必需的双语文件、本地链接、UTF-8 编码和旧公开脚手架清理。
 - Alpha 发布前，精确 public commit 的 Quality、Documentation quality、Supply chain、CodeQL
   和 Pages 必须全部通过。
